@@ -1,6 +1,9 @@
 function download_map()
 { 
-    document.querySelectorAll('svg style#custom_colors')[0].innerHTML = map_stylesheet.innerHTML
+    var clean_style = "\n" + map_stylesheet.innerHTML
+    clean_style = clean_style.replaceAll('svg', '')
+
+    document.querySelectorAll('svg style#custom_colors')[0].innerHTML = clean_style
     
     
     var svgData = document.querySelectorAll('svg')[0].outerHTML;
