@@ -1,3 +1,8 @@
+.legendchunk {
+    display: inline-block;
+    min-width: 10em;
+}
+
 div.thumb {
   width: auto;
   background-color: transparent;

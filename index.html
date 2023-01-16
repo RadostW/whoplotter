@@ -31,8 +31,9 @@
   <div class="row align-items-start">
     <div id="col_ui" class="col">
     
-        <select id="base_map_select" class="form-select" aria-label="">
-            <option value="world">Basemap: world</option>
+        <select id="base_map_select" class="form-select" aria-label="" onchange="set_map_view(event.target.value);">
+            <option value="world">Basemap: World</option>
+            <option value="europe">Basemap: Europe</option>
         </select>
     
         <select id="color_scale_select" class="form-select" aria-label="">
@@ -51,6 +52,12 @@
             <option value="8">Max levels: 8 </option>
             <option value="9">Max levels: 9 </option>
             <option value="10">Max levels: 10</option>
+            <option value="11">Max levels: 11</option>
+            <option value="12">Max levels: 12</option>
+            <option value="13">Max levels: 13</option>
+            <option value="14">Max levels: 14</option>
+            <option value="15">Max levels: 15</option>
+            <option value="16">Max levels: 16</option>
         </select>
         
         <div class="btn-group w-100 my-2" role="group" aria-label="">
