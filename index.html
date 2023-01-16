@@ -1,71 +1,162 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-  <meta name="description" content="An webapp to plot WHO indicators on SVG maps." />
-  <meta charset="utf-8">
-  <title>Who plotter</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="Radost Waszkiewicz (2022)">
-  
-  <!---
-  <link rel="stylesheet" href="css/style.css">
-  --->
-  
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" rel="icon" type="image/x-icon" />
+
+<link rel="stylesheet" href="./js_excel/jexcel.css" type="text/css" />
+<script src="./js_excel/jexcel.js"></script>
+<script src="./js_excel/jsuites.js"></script>
+
+<link rel="stylesheet" href="./wiki_styles/wiki.css" type="text/css" />
+<link rel="stylesheet" href="./bootstrap/bootstrap.min.css" type="text/css" />
+
+
+<script src="./country_data/countries.js"></script>
+<script src="./country_data/table_actions.js"></script>
+
+<script src="./file_actions/save_file.js"></script>
+<script src="./file_actions/color_map.js"></script>
+
+<style id="map style" onload="map_stylesheet = this;">
+</style>
+ 
 </head>
 
 <body>
-<div class="row p-2">
-  <div class="col">
-    <select class="m-2 form-select" id="indicator_select" aria-label="Indicator selector">
-      <option selected>Select indicator to visualize</option>
-      <option value="1">AIR_10</option>
-      <option value="2">AIR_11</option>
-    </select>
-      
-  <table class="m-2 table">
-  <tr>
-  <th>Indicator code</th>
-  <th>Indicator description</th>
-  </tr>
-  
-  <tr>
-  <td>...</td>
-  <td>...</td>
-  </tr>
-  
-  </table>
-  
-  <button type="button" id="load_countries" class="m-2 btn btn-success">Load conutry data</button>
-  <button type="button" id="share_state" class="m-2 btn btn-outline-success">Share this map</button>
-    
-  <table class="m-2 table">
-  <tr>
-  <th>Country name</th>
-  <th>Code</th>
-  <th>Code</th>
-  <th>Value</th>
-  <th>Color</th>
-  </tr>
-  
-  <tr>
-  <td>Poland</td>
-  <td>POL</td>
-  <td>PL</td>
-  <td>4.2</td>
-  <td>red</td>
-  </tr>
-  
-  </table>    
-    
-  </div>
-  <div class="col">
-  Output map
-  </div>
-</div>
+<div class="container">
 
-<script src="js/who.js"></script>
+  <h1>Create SVG maps for Wikipedia</h1>
+
+  <div class="row align-items-start">
+    <div id="col_ui" class="col">
+    
+        <select id="base_map_select" class="form-select" aria-label="">
+            <option value="world">Basemap: world</option>
+        </select>
+    
+        <select id="color_scale_select" class="form-select" aria-label="">
+            <option value="linear">Colorscale: linear</option>
+            <option value="log">Colorscale: log</option>
+            <option value="linear_div">Colorscale: linear - positive and negative</option>
+            <option value="manual">Colorscale: manual</option>
+        </select>
+    
+        <select id="levels_select" class="form-select" aria-label="">
+            <option value="3">Max levels: 3 </option>
+            <option value="4">Max levels: 4 </option>
+            <option value="5">Max levels: 5 </option>
+            <option value="6">Max levels: 6 </option>
+            <option value="7">Max levels: 7 </option>
+            <option value="8">Max levels: 8 </option>
+            <option value="9">Max levels: 9 </option>
+            <option value="10">Max levels: 10</option>
+        </select>
+        
+        <div class="btn-group w-100 my-2" role="group" aria-label="">
+          <!---
+          <button type="button" class="btn btn-outline-secondary">Reset (area sort)</button>
+          <button type="button" class="btn btn-outline-secondary">Reset (pop. sort)</button>
+          --->
+          <button type="button" class="btn btn-outline-secondary" onclick="table_init();">Reset</button>
+          <button type="button" class="btn btn-outline-secondary" onclick="clear_table();">Reset (blank)</button>
+        </div>
+    
+        <div class="btn-group w-100 my-2" role="group" aria-label="">
+          <button type="button" class="btn btn-outline-success" onclick="make_map();">Color the map</button>
+        </div>
+    
+        <div>
+        <details class="my-2">
+            <summary>Show/hide hints</summary>
+            I currently can read 3 types of counrty descriptors:
+            <ul>
+              <li>Contry name (case sensitive): Poland, Cote d'Ivoire</li>
+              <li>Contry code (3 letters): POL or pol, CIV or civ</li>
+              <li>Country code (2 letters): PL or pl, CI or ci</li>
+            </ul>
+            You can use 'manual' mode to give countries color of choice, any CSS color would work.
+            <ul>
+              <li>Hex colors: #67a or #fafb11</li>
+              <li>Named colors: red, black</li>
+              <li>RGB colors: rgb(255,0,0)</li>
+            </ul>
+        </details>
+        </div>
+    
+        <div style="display: flex; justify-content: center;">
+        <table id="spreadsheet">
+          <thead>
+          <tr>
+            <th>Country</th>
+            <th>Value</th>
+          </tr>
+          </thead>
+          <tr>
+            <td>France</td>
+            <td>3.2</td>
+          </tr>
+          <tr>
+            <td>es</td>
+            <td>2.5</td>
+          </tr>
+          <tr>
+            <td>POL</td>
+            <td>2.5</td>
+          </tr>          
+        </table>  
+        </div>
+        
+        <div class="btn-group w-100" role="group">
+            <button type="button" class="btn btn-outline-secondary" onclick="more_rows();">More rows</button>
+            <button type="button" class="btn btn-outline-secondary" onclick="trim_rows();">Trim empty rows</button>
+        </div>
+    </div>
+    <div id="col_display" class="col">
+    <!--- Wiki style display --->
+        <div class="thumb" style="display: flex; justify-content: center;">
+            <div class="thumbinner" style="width:508px;">
+                <div width="500" height="254" style=".ua {fill: #ff0000;}">
+                    <object 
+                        type="image/svg+xml" 
+                        data="./map_files/World_Map.svg"
+                        onload="this.parentNode.replaceChild(this.contentDocument.documentElement,this);">
+                    </object>
+                </div>                
+                <div class="thumbcaption" id="map_caption">
+                    Example caption wiki-style display
+                </div>
+            </div>
+        </div>        
+        
+        <div class="btn-group w-100" role="group">
+            <button type="button" class="btn btn-outline-success" onclick="download_map();">Get this map</button>
+        </div>
+    </div>
+  </div>
+<div>  
+ 
+<style>
+    td:not(thead td) {
+      text-align: left !important;;
+    }
+</style> 
+
+<script>
+
+ui_table = jspreadsheet(
+    document.getElementById('spreadsheet'), 
+    {
+        contextMenu: function() {
+        return false;
+        }
+    }
+    );
+
+ui_table.setWidth(0, 200);
+ui_table.setWidth(1, 200);
+
+</script>
 
 </body>
 </html>

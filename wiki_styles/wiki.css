@@ -1,0 +1,34 @@
+div.thumb {
+  width: auto;
+  background-color: transparent;
+  margin-bottom: 0.5em;
+}
+
+div.thumbinner {
+  border: 1px solid #c8ccd1;
+  background-color: #f8f9fa;
+  font-size: 94%;
+  padding: 3px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.thumbimage {
+  background-color: #ffffff;
+  border: 1px solid #c8ccd1;
+}
+
+.thumbcaption {
+  text-align: left;
+  border: 0;
+  font-size: 94%;
+  text-align: left;
+  line-height: 1.4em;
+  padding: 3px;
+}
+
+.thumblegend {
+    border:solid 1px silver;
+    font-size:80%!important;
+    vertical-align:middle;
+}
